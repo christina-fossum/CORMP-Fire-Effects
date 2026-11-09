@@ -9,6 +9,8 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Edited 11/09/2026 CAF - post-burn QAQC for 2026 fall burns
+
 
 Date: 10/14/2025
 Edited by: Christina Fossum
@@ -103,8 +105,7 @@ load_data <- function(directory_path, pattern) {
 
 # Set "directory_path" to source file location
 
-directory_path <- "FFI data - WORKING/Fall25_POST/"
-
+directory_path <- "C:/Users/cfossum/OneDrive - DOI/Desktop/ROMOFX/FFI Data - WORKING/postburn/"
 
 # load data (Surface Fuels - Fine)
 fuelsfine_df <- load_data(directory_path, "_Surface Fuels - Fine.csv$")
@@ -677,7 +678,7 @@ errors_BS <- rbind(errors_BS, qaqc(BS_df, "Vegetation BS", "Reasonable BS", valu
 errors_ALL <- rbind(errors_FuelsFine, errors_Fuels1000, errors_FuelsDL, errors_Trees, errors_BS)
 errors_ALL <- unique(errors_ALL)
 
-write_xlsx(errors_ALL,"Error Logs/Fall2025_PostBurn.xlsx")
+write_xlsx(errors_ALL,"Error Logs/Fall2026_PostBurn.xlsx")
 
 
 ```

@@ -9,6 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+Date: 11/09 - generating error log for RAP07, 08, 11, 12 pre- burn. - CAF
+
 Date: 11/2/2026
 Edited by: Aline Johnson
 
@@ -104,7 +107,7 @@ load_data <- function(directory_path, pattern) {
 
 # Set "directory_path" to source file location
 
-directory_path <- "WORKING/Eagle Cliff/"
+directory_path <- "C:/Users/cfossum/OneDrive - DOI/Desktop/ROMOFX/FFI Data - WORKING/HQBlocksC&DPre/"
 
 
 # load data (Surface Fuels - Fine)
@@ -1079,11 +1082,11 @@ errors_shrubs <- bind_rows(errors_shrubs, qaqc(
 ## Step 8. Combine error logs and save as .xslx
 
 ```{r}
-errors_ALL <- rbind(errors_FuelsFine, errors_Fuels1000, errors_FuelsDL, errors_Trees, errors_cover, errors_seedlings, errors_shrubs)
+errors_ALL <- rbind(errors_FuelsFine, errors_Fuels1000, errors_FuelsDL, errors_cover, errors_seedlings, errors_shrubs)#, errors_Trees, )
 errors_ALL <- unique(errors_ALL)
 
 #change name of excel file: 
-write_xlsx(errors_ALL,"Error Logs/2026_EagleCliff.xlsx")
+write_xlsx(errors_ALL,"Error Logs/HQBlocksCD_pre.xlsx")
 
 
 ```
