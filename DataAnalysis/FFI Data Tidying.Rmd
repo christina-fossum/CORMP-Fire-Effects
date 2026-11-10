@@ -174,7 +174,7 @@ fuels_report <- fuels_report %>% select(c(Plot, PlotStatus, OneHr, TenHr, HunHr,
 
 
 
-write.csv(seedling_df, "C:/Users/cfossum/OneDrive - DOI/Desktop/ROMOFX/DataAnalysis/Data_Clean/Fall26RX/fall26rx_pre_post_FUELS.csv")
+write.csv(fuels_report, "C:/Users/cfossum/OneDrive - DOI/Desktop/ROMOFX/DataAnalysis/Data_Clean/fall26rx_pre_post_FUELS.csv")
 
 
 

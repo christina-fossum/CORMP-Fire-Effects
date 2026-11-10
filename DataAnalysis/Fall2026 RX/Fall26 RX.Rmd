@@ -1,0 +1,72 @@
+---
+title: "Fall26 RX"
+output: html_document
+date: "2026-11-09"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Edited by CAF 11/09/2026
+Data Analysis for Fall26 RX
+
+Contents
+1. Fuels
+2. Burn Severity
+3. Tree burn severity
+
+1. Fuels
+```{r}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+
+fuels <- read.csv("Fall26RX/fall26rx_pre_post_FUELS.csv")
+
+fuels <- fuels %>% mutate(Block = case_when(Plot == "RAP_07" | Plot == "RAP_08" | Plot == "RAP_11" | Plot == "RAP_12" ~ "Block_CD",
+                                            TRUE ~ "Block_A1"))
+fuels <- fuels %>% filter(Plot != "RAP_09")%>% filter(Plot != "RAP_10")
+
+fuels2 <- fuels %>% select(c(Plot, Block, PlotStatus, FineWood, TotalWood, Duff, Litter, TotalAll, DuffDep, LittDep, TotDep)) %>%  
+  pivot_longer(cols = c(FineWood, TotalWood, Duff, Litter, TotalAll, DuffDep, LittDep, TotDep), names_to = "FuelCategory", values_to = "value")
+
+fuels2$PlotStatus <- factor(fuels2$PlotStatus, levels = c("PreBurn", "PostBurn"), ordered = TRUE)
+
+ggplot(fuels2, aes(x = Block, y = value, fill = PlotStatus)) + geom_boxplot() + facet_wrap(vars(FuelCategory))
+
+fuels_summary <- fuels2 %>% group_by(Block, PlotStatus, FuelCategory) %>% summarise(n = n(),
+                                                                      mean = mean(value), sd = sd(value), min = min(value), max = max(value), .groups = "drop")
+
+```
+
+
+2. Burn Severity
+```{r}
+bs <- read.csv("Fall26RX/fall26rx_post_BURNSEVERITY.csv")
+
+bs2 <- bs %>% pivot_longer(cols = c(6:15), names_to = c("Category", "Severity"), names_pattern = "([A-Za-z]+)([0-9]+)Pct", values_to = "Percent")
+bs2 <- bs2 %>% mutate(Severity = case_when(Severity == 1 ~ "Heavily Burned",
+                                           Severity == 2 ~ "Moderately Burned",
+                                           Severity == 3 ~ "Lightly Burned", 
+                                           Severity == 4 ~ "Scorched", Severity == 5 ~ "Unburned"))
+
+bs2$Severity <- factor(bs2$Severity, levels = c("Unburned", "Scorched", "Lightly Burned", "Moderately Burned", "Heavily Burned"), ordered = TRUE)
+bs2 <- bs2 %>% mutate(Block = case_when(Plot == "RAP_07" | Plot == "RAP_08" | Plot == "RAP_11" | Plot == "RAP_12" ~ "Block_CD",
+                                            TRUE ~ "Block_A1"))
+bs2 <- bs2 %>% mutate(Category = case_when(Category == "Sub" ~ "Substrate", Category == "Veg" ~ "Vegetation"))
+
+bs_summary <- bs2 %>% group_by(Block, Category, Severity) %>% summarise(n = n(),
+                                                                      mean = mean(Percent), sd = sd(Percent),  .groups = "drop")
+
+
+ggplot(bs_summary, aes(x = Severity, y = mean, fill = Category)) + geom_col(position = position_dodge()) + facet_wrap(vars(Block))
+
+
+```
+
+3. Tree Burn Severity 
+```{r}
+
+
+```
