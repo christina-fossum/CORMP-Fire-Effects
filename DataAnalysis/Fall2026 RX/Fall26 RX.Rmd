@@ -67,6 +67,18 @@ ggplot(bs_summary, aes(x = Severity, y = mean, fill = Category)) + geom_col(posi
 
 3. Tree Burn Severity 
 ```{r}
+trees <- read.csv("Fall26RX/fall26rx_pre_post_TREES.csv")
+
+postburn <- trees %>% filter(PlotStatus == "PostBurn")
+
+postburn <- postburn %>% mutate(Block = case_when(Plot == "RAP_07" | Plot == "RAP_08" | Plot == "RAP_11" | Plot == "RAP_12" ~ "Block_CD",
+                                            TRUE ~ "Block_A1"))
+
+postburn <- postburn %>% rename(Char_Ht_m = Char.Ht., Scorch_Ht_m = Scorch.Ht., CrownScorch_Pct = Crown.Scorch..) %>% pivot_longer(cols = c(Char_Ht_m, Scorch_Ht_m, CrownScorch_Pct), names_to = "measurement", values_to = "value")
+
+postburn_summary <- postburn %>% group_by(Block, measurement) %>% summarise(n = n(), mean = mean(value), sd = sd(value), .groups = "drop")
+
+
 
 
 ```
